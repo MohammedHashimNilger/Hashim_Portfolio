@@ -1,0 +1,27 @@
+.play-page {
+  min-height: 100vh;
+  background-color: var(--backgroundColor);
+  color: #eae5ec;
+  padding: 40px 5%;
+  display: flex;
+  flex-direction: column;
+}
+.play-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.play-header h1 {
+  font-size: 80px;
+  margin: 0;
+  font-weight: 400;
+  background: linear-gradient(0deg, #7f40ff, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.play-header p {
+  font-size: 18px;
+  color: #adacac;
+}
