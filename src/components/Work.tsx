@@ -8,97 +8,127 @@ import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MOBILE_BREAKPOINT = 768;
+
 const Work = () => {
   useEffect(() => {
-    // On mobile: vertical layout with scroll-triggered entry animations
-    if (window.innerWidth <= 768) {
-      const workBoxes = document.querySelectorAll(".work-box");
+    let cleanupFn: (() => void) | null = null;
 
-      // Reset any stray transforms first
-      gsap.set(".work-flex", { x: 0 });
-      gsap.set(workBoxes, { clearProps: "transform" });
+    function initAnimations() {
+      // Kill everything before re-initializing
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      gsap.set(".work-flex", { clearProps: "x" });
+      gsap.set(".work-box", { clearProps: "opacity,y,transform" });
 
-      // Create scroll-triggered fade-in animations for each work box
-      const mobileToggles: gsap.core.Tween[] = [];
-      workBoxes.forEach((box) => {
-        const tween = gsap.fromTo(
-          box,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: box,
-              start: "top 85%",
-              end: "top 40%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-        mobileToggles.push(tween);
-      });
+      if (cleanupFn) {
+        cleanupFn();
+        cleanupFn = null;
+      }
 
-      ScrollTrigger.refresh();
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        // ── MOBILE: vertical fade-in per card ──
+        const workBoxes = document.querySelectorAll<HTMLElement>(".work-box");
 
-      return () => {
-        mobileToggles.forEach((t) => t.kill());
-        ScrollTrigger.getAll().forEach((st) => {
-          if (st.vars.id !== "work") st.kill();
+        const tweens: gsap.core.Tween[] = [];
+        workBoxes.forEach((box) => {
+          const tween = gsap.fromTo(
+            box,
+            { opacity: 0, y: 60 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: box,
+                start: "top 85%",
+                end: "top 40%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+          tweens.push(tween);
         });
-      };
+
+        ScrollTrigger.refresh();
+
+        cleanupFn = () => {
+          tweens.forEach((t) => t.kill());
+          ScrollTrigger.getAll().forEach((st) => st.kill());
+        };
+      } else {
+        // ── DESKTOP: horizontal pinned scroll ──
+        let translateX = 0;
+
+        function setTranslateX() {
+          const boxes = document.getElementsByClassName("work-box");
+          if (boxes.length === 0) return;
+          const containerLeft = document
+            .querySelector(".work-container")!
+            .getBoundingClientRect().left;
+          const rect = boxes[0].getBoundingClientRect();
+          const parentWidth =
+            boxes[0].parentElement!.getBoundingClientRect().width;
+          const padding =
+            parseInt(window.getComputedStyle(boxes[0]).padding) / 2;
+          translateX =
+            rect.width * boxes.length - (containerLeft + parentWidth) + padding;
+        }
+
+        setTranslateX();
+
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".work-section",
+            start: "top top",
+            end: `+=${translateX}`,
+            scrub: 1,
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            id: "work",
+            invalidateOnRefresh: true,
+          },
+        });
+
+        timeline.to(".work-flex", {
+          x: -translateX,
+          ease: "none",
+        });
+
+        ScrollTrigger.refresh();
+
+        cleanupFn = () => {
+          timeline.kill();
+          ScrollTrigger.getById("work")?.kill();
+        };
+      }
     }
 
-    let translateX: number = 0;
+    // Init on mount
+    initAnimations();
 
-    function setTranslateX() {
-      const box = document.getElementsByClassName("work-box");
-      if (box.length === 0) return;
-      const rectLeft = document
-        .querySelector(".work-container")!
-        .getBoundingClientRect().left;
-      const rect = box[0].getBoundingClientRect();
-      const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-      let padding: number =
-        parseInt(window.getComputedStyle(box[0]).padding) / 2;
-      translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-    }
-
-    setTranslateX();
-
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".work-section",
-        start: "top top",
-        end: `+=${translateX}`,
-        scrub: 1,
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        id: "work",
-        invalidateOnRefresh: true,
-      },
-    });
-
-    timeline.to(".work-flex", {
-      x: -translateX,
-      ease: "none",
-    });
-
-    ScrollTrigger.refresh();
+    // Re-init on resize (handles orientation change too)
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        initAnimations();
+      }, 200);
+    };
+    window.addEventListener("resize", onResize);
 
     return () => {
-      timeline.kill();
-      ScrollTrigger.getById("work")?.kill();
+      window.removeEventListener("resize", onResize);
+      clearTimeout(resizeTimer);
+      if (cleanupFn) cleanupFn();
+      ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
 
   return (
     <div className="work-section" id="work">
-      <div
-        className="work-container section-container"
-      >
+      <div className="work-container section-container">
         <h2>
           My <span>Work</span>
         </h2>
