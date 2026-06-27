@@ -3,8 +3,10 @@ import gsap from "gsap";
 import { lenis } from "../Navbar";
 
 export function initialFX() {
+  const isMobile = window.innerWidth <= 768;
+  
   document.body.style.overflowY = "auto";
-  if (lenis) {
+  if (lenis && !isMobile) {
     lenis.start();
   }
   document.getElementsByTagName("main")[0].classList.add("main-active");

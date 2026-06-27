@@ -101,3 +101,28 @@ div.resume-button span {
     margin-top: -1.5px;
   }
 }
+
+@media only screen and (max-width: 767px) {
+  .resume-button {
+    bottom: 20px;
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 3px;
+  }
+  div.resume-button span {
+    font-size: 14px;
+    margin-top: -1px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .resume-button {
+    bottom: 15px;
+    font-size: 10px;
+    line-height: 10px;
+    letter-spacing: 2px;
+  }
+  div.resume-button span {
+    font-size: 12px;
+  }
+}

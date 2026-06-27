@@ -41,21 +41,37 @@ body {
 @media only screen and (max-width: 768px) {
   body {
     overflow: auto !important;
+    overflow-x: hidden !important;
     height: auto !important;
     min-height: 100vh !important;
+    min-height: 100dvh !important;
     touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
   }
 
   html {
     overflow-x: hidden !important;
     overflow-y: auto !important;
     touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Ensure no fixed elements block scrolling */
   .container-main {
     position: static !important;
     height: auto !important;
+  }
+
+  /* Fix 100vh on mobile browsers (address bar issue) */
+  .landing-section,
+  .landing-container {
+    min-height: 100dvh;
+  }
+
+  /* Prevent text size adjustment on orientation change */
+  * {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 }
 
@@ -187,5 +203,21 @@ body {
 @media screen and (max-width: 900px) {
   .techstack h2 {
     font-size: 40px;
+    top: 80px;
+  }
+  .techstack {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .techstack h2 {
+    font-size: 28px;
+    top: 60px;
+  }
+  .techstack {
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
 }

@@ -1,5 +1,6 @@
 .section-container {
   width: 1300px;
+  max-width: var(--cWidth);
 }
 .title,
 .para {
@@ -23,7 +24,33 @@
 }
 @media only screen and (max-width: 900px) {
   .section-container {
-    width: 500px;
+    width: 100%;
     max-width: var(--cWidth);
+  }
+}
+@media only screen and (max-width: 400px) {
+  .section-container {
+    width: 100%;
+    max-width: calc(100% - 20px);
+  }
+}
+
+/* Ensure proper section spacing on mobile */
+@media only screen and (max-width: 768px) {
+  .about-section,
+  .whatIDO,
+  .career-section,
+  .work-section,
+  .techstack-new,
+  .cta-section,
+  .contact-section {
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .about-section {
+    margin-top: 10px !important;
   }
 }

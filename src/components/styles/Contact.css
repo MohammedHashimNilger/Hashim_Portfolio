@@ -132,9 +132,56 @@ a.contact-social {
   .contact-section {
     margin-top: 50px;
     padding-bottom: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   .contact-container {
     width: calc(100% - 25px);
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .contact-section {
+    margin-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .contact-section h3 {
+    font-size: 22px;
+  }
+
+  .contact-box h2 {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .contact-flex {
+    gap: 25px;
+  }
+
+  a.contact-social {
+    font-size: 14px;
+  }
+
+  .contact-flex h4 {
+    font-size: 13px;
+    margin-top: 15px;
+  }
+
+  .contact-flex p {
+    font-size: 13px;
+  }
+
+  .contact-box h5 {
+    font-size: 12px;
+    gap: 5px;
+  }
+
+  .contact-avatar {
+    width: 80px;
+    height: 80px;
   }
 }
 

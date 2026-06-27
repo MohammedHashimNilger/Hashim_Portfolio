@@ -317,8 +317,19 @@
 /* Mobile: Stack work items vertically when GSAP pinning is disabled */
 @media only screen and (max-width: 768px) {
   .work-section {
-    height: auto;
-    min-height: auto;
+    height: auto !important;
+    min-height: auto !important;
+    padding-top: 80px !important;
+    padding-bottom: 60px !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  .work-container {
+    height: auto !important;
+    padding-top: 20px;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
 
   .work-flex {
@@ -326,15 +337,23 @@
     margin-left: 0;
     padding-right: 0;
     gap: 0;
+    height: auto !important;
+  }
+
+  .work-flex::before,
+  .work-flex::after {
+    display: none;
   }
 
   .work-box {
     width: 100%;
     max-width: 100%;
-    padding: 30px 15px;
+    padding: 40px 20px;
     border-right: none;
     border-bottom: 1px solid #363636;
-    gap: 20px;
+    gap: 24px;
+    flex-shrink: unset;
+    height: auto !important;
   }
 
   .work-flex .work-box:nth-child(even) {
@@ -343,25 +362,47 @@
 
   .work-section h2 {
     font-size: 36px;
-    margin-top: 50px;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 0 15px;
+  }
+
+  .work-title {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .work-title>div {
+    text-align: left;
   }
 
   .work-title h3 {
-    font-size: 30px;
-    line-height: 30px;
+    font-size: 28px;
+    line-height: 28px;
   }
 
   .work-info h4 {
     font-size: 18px;
   }
 
+  .work-info p {
+    font-size: 14px;
+  }
+
+  .work-image {
+    margin-top: 16px;
+  }
+
   .work-image img {
-    max-height: 200px;
+    max-height: 250px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
   }
 
   .work-box-cta {
-    padding: 40px 20px;
+    padding: 50px 20px;
     border-bottom: none;
   }
 
@@ -370,6 +411,63 @@
   }
 
   .see-all-works p {
+    font-size: 14px;
+  }
+
+  .work-text-links {
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .work-text-link {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .work-section h2 {
+    font-size: 28px;
+    margin-top: 40px;
+  }
+
+  .work-box {
+    padding: 20px 12px;
+  }
+
+  .work-title h3 {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .work-info h4 {
+    font-size: 14px;
+  }
+
+  .work-info p {
+    font-size: 12px;
+  }
+
+  .work-image img {
+    max-height: 150px;
+  }
+
+  .work-box-cta {
+    padding: 30px 15px;
+  }
+
+  .see-all-works h3 {
+    font-size: 20px;
+  }
+
+  .see-all-works p {
+    font-size: 13px;
+    max-width: 200px;
+  }
+
+  .see-all-btn {
+    padding: 12px 25px;
     font-size: 14px;
   }
 }

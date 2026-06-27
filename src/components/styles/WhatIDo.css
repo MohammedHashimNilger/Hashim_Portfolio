@@ -48,26 +48,29 @@
   width: 450px;
   height: 33%;
   min-height: 50%;
-  transition: 0.5s;
-  /* border: 0.5px dashed rgba(255, 255, 255, 0.3); */
+  transition: min-height 0.5s ease, padding 0.5s ease;
   position: relative;
   padding: 50px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
+/* ── Expanded state (click/tap OR desktop hover) ── */
 .what-noTouch:hover,
 .what-content-active {
   min-height: 67%;
   padding: 40px 50px;
 }
 
-.what-noTouch:hover~.what-content,
+/* ── Shrunk sibling state ── */
+.what-noTouch:hover ~ .what-content,
 .what-box-in:hover .what-noTouch:not(:hover),
 .what-content.what-sibling {
   min-height: 33%;
   padding: 10px 50px;
 }
 
+/* ── Typography ── */
 .what-content h3 {
   font-size: 35px;
   letter-spacing: 1px;
@@ -89,29 +92,21 @@
   opacity: 0.3;
 }
 
+/* ── Content flicker animation ── */
 .what-content-in {
   opacity: 0;
   animation: whatFlicker 0.5s 1 forwards;
   animation-delay: 1s;
+  height: 100%;
+  overflow: hidden;
 }
 
 @keyframes whatFlicker {
-
-  0%,
-  25%,
-  35%,
-  60% {
-    opacity: 0;
-  }
-
-  30%,
-  50%,
-  40%,
-  100% {
-    opacity: 1;
-  }
+  0%, 25%, 35%, 60% { opacity: 0; }
+  30%, 50%, 40%, 100% { opacity: 1; }
 }
 
+/* ── Corner decorators ── */
 .what-content::before,
 .what-corner::before,
 .what-content::after,
@@ -127,9 +122,7 @@
 }
 
 @keyframes whatCorners {
-  100% {
-    opacity: 1;
-  }
+  100% { opacity: 1; }
 }
 
 .what-content::before {
@@ -160,6 +153,7 @@
   border-top: none;
 }
 
+/* ── Arrow button ── */
 .what-arrow {
   position: absolute;
   bottom: 20px;
@@ -177,16 +171,18 @@
   transform: translate(-50%, -50%) rotate(-45deg);
   border-left: 1px solid #fff;
   border-bottom: 1px solid #fff;
-  transition: 0.5s;
+  transition: transform 0.5s ease;
   width: 10px;
   height: 10px;
 }
 
+/* Arrow rotates when expanded — works for both hover and click/tap */
 .what-noTouch:hover .what-arrow::before,
 .what-content-active .what-arrow::before {
   transform: translate(-50%, -20%) rotate(-225deg);
 }
 
+/* ── Dashed border animations ── */
 .what-border1 {
   position: absolute;
   top: 0;
@@ -229,11 +225,16 @@
   position: absolute;
 }
 
-.what-content-in {
-  height: 100%;
-  overflow: hidden;
+@keyframes whatBorders {
+  80% { opacity: 0.8; }
+  100% {
+    max-height: 100%;
+    max-width: 100%;
+    opacity: 0.2;
+  }
 }
 
+/* ── Tags ── */
 .what-content-in h5 {
   font-weight: 300;
   opacity: 0.5;
@@ -241,18 +242,6 @@
   letter-spacing: 1px;
   font-family: "Geist", sans-serif;
   margin-bottom: 5px;
-}
-
-@keyframes whatBorders {
-  80% {
-    opacity: 0.8;
-  }
-
-  100% {
-    max-height: 100%;
-    max-width: 100%;
-    opacity: 0.2;
-  }
 }
 
 .what-content-flex {
@@ -270,6 +259,10 @@
   border-radius: 30px;
 }
 
+/* ─────────────────────────────
+   RESPONSIVE
+───────────────────────────── */
+
 @media only screen and (max-width: 1600px) {
   .what-box h2 {
     margin-right: 18%;
@@ -283,6 +276,7 @@
 
   .what-box-in {
     height: 400px;
+    margin-left: 50px;
   }
 
   .what-content h3 {
@@ -303,24 +297,18 @@
     padding: 20px 30px;
   }
 
-  .what-noTouch:hover~.what-content,
+  .what-noTouch:hover ~ .what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
     padding: 10px 30px;
   }
 
-  .what-tags {
-    font-size: 12px;
-  }
-}
-
-@media only screen and (max-width: 1400px) {
-  .what-box-in {
-    margin-left: 50px;
-  }
-
   .what-content {
     width: 380px;
+  }
+
+  .what-tags {
+    font-size: 12px;
   }
 }
 
@@ -351,7 +339,7 @@
     padding: 50px;
   }
 
-  .what-noTouch:hover~.what-content,
+  .what-noTouch:hover ~ .what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
     min-height: 33%;
@@ -386,6 +374,7 @@
 
   .what-content {
     width: 100%;
+    padding: 30px;
   }
 
   .what-box-in {
@@ -393,10 +382,11 @@
     height: 450px;
   }
 
+  /* Tags and skills label fade in only when active/hovered */
   .what-content h5,
   .what-content-flex {
     opacity: 0;
-    transition: 0.3s;
+    transition: opacity 0.3s ease;
   }
 
   .what-noTouch:hover h5,
@@ -404,10 +394,6 @@
   .what-noTouch:hover .what-content-flex,
   .what-content-active .what-content-flex {
     opacity: 1;
-  }
-
-  .what-content {
-    padding: 30px;
   }
 
   .what-content p {
@@ -419,11 +405,7 @@
     padding: 10px 30px;
   }
 
-  .what-tags {
-    font-size: 11px;
-  }
-
-  .what-noTouch:hover~.what-content,
+  .what-noTouch:hover ~ .what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
     padding: 5px 30px;
@@ -431,6 +413,10 @@
 
   .what-content h3 {
     font-size: 25px;
+  }
+
+  .what-tags {
+    font-size: 11px;
   }
 }
 

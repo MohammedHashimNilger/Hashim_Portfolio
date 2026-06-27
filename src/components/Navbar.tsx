@@ -11,6 +11,11 @@ export let lenis: Lenis | null = null;
 
 const Navbar = () => {
   useEffect(() => {
+    // Disable Lenis on mobile - use native scrolling
+    if (window.innerWidth <= 768) {
+      return;
+    }
+
     lenis = new Lenis({
       duration: 1.7,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -57,6 +62,7 @@ const Navbar = () => {
 
     return () => {
       lenis?.destroy();
+      lenis = null;
     };
   }, []);
 

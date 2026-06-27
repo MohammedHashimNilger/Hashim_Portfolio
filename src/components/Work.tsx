@@ -10,7 +10,45 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
   useEffect(() => {
-    if (window.innerWidth <= 768) return;
+    // On mobile: vertical layout with scroll-triggered entry animations
+    if (window.innerWidth <= 768) {
+      const workBoxes = document.querySelectorAll(".work-box");
+
+      // Reset any stray transforms first
+      gsap.set(".work-flex", { x: 0 });
+      gsap.set(workBoxes, { clearProps: "transform" });
+
+      // Create scroll-triggered fade-in animations for each work box
+      const mobileToggles: gsap.core.Tween[] = [];
+      workBoxes.forEach((box) => {
+        const tween = gsap.fromTo(
+          box,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: box,
+              start: "top 85%",
+              end: "top 40%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+        mobileToggles.push(tween);
+      });
+
+      ScrollTrigger.refresh();
+
+      return () => {
+        mobileToggles.forEach((t) => t.kill());
+        ScrollTrigger.getAll().forEach((st) => {
+          if (st.vars.id !== "work") st.kill();
+        });
+      };
+    }
 
     let translateX: number = 0;
 
@@ -29,7 +67,7 @@ const Work = () => {
 
     setTranslateX();
 
-    let timeline = gsap.timeline({
+    const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: ".work-section",
         start: "top top",
@@ -58,7 +96,9 @@ const Work = () => {
 
   return (
     <div className="work-section" id="work">
-      <div className="work-container section-container">
+      <div
+        className="work-container section-container"
+      >
         <h2>
           My <span>Work</span>
         </h2>

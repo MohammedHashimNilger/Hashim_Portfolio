@@ -6,7 +6,7 @@ const MyWorks = () => {
   return (
     <div className="myworks-page">
       <div className="myworks-header">
-        <Link to="/" className="back-btn" data-cursor="disable">← Back</Link>
+        <Link to="/" className="back-button" data-cursor="disable">← Back</Link>
         <h1>All Works</h1>
       </div>
       <div className="myworks-grid">

@@ -11,6 +11,7 @@ import Work from "./Work";
 import TechStackNew from "./TechStackNew";
 import CallToAction from "./CallToAction";
 import setSplitText from "./utils/splitText";
+import { setAllTimeline } from "./utils/GsapScroll";
 
 // Character only loads on desktop
 const CharacterModel = lazy(() => import("./Character"));
@@ -19,6 +20,15 @@ const MainContainer = () => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
     window.innerWidth > 1024
   );
+
+  // Career timeline — runs on all screen sizes (not just desktop)
+  useEffect(() => {
+    // Small delay to ensure Career DOM is rendered
+    const timer = setTimeout(() => {
+      setAllTimeline();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const resizeHandler = () => {

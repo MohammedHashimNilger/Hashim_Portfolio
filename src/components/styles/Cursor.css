@@ -31,3 +31,16 @@
     --size: 0px;
   }
 }
+
+/* Hide cursor on touch devices and small screens */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-main {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .cursor-main {
+    display: none !important;
+  }
+}

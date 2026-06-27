@@ -81,3 +81,27 @@
     font-size: 18px;
   }
 }
+
+@media only screen and (max-width: 400px) {
+  .header {
+    padding: 10px 0px;
+    width: calc(100% - 20px);
+  }
+
+  .navbar-title {
+    font-size: 12px;
+  }
+
+  .header ul {
+    font-size: 10px;
+    column-gap: 12px;
+  }
+
+  .header ul li {
+    letter-spacing: 0.5px;
+  }
+
+  .navbar-connect {
+    font-size: 11px;
+  }
+}

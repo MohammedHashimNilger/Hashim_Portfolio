@@ -1,30 +1,38 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import "./styles/WhatIDo.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { config } from "../config";
 
 const WhatIDo = () => {
   const containerRef = useRef<(HTMLDivElement | null)[]>([]);
-  const setRef = (el: HTMLDivElement | null, index: number) => {
+  const handlerRefs = useRef<((e: MouseEvent) => void)[]>([]);
+
+  const setRef = useCallback((el: HTMLDivElement | null, index: number) => {
     containerRef.current[index] = el;
-  };
+  }, []);
+
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
-        }
-      });
-    }
+    handlerRefs.current = [];
+
+    containerRef.current.forEach((container, i) => {
+      if (container) {
+        const handler = () => {
+          handleClick(container);
+        };
+        container.addEventListener("click", handler);
+        handlerRefs.current[i] = handler;
+      }
+    });
+
     return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
+      containerRef.current.forEach((container, i) => {
+        const handler = handlerRefs.current[i];
+        if (container && handler) {
+          container.removeEventListener("click", handler);
         }
       });
     };
   }, []);
+
   return (
     <div className="whatIDO">
       <div className="what-box">
@@ -43,6 +51,8 @@ const WhatIDo = () => {
               <line x1="100%" y1="0" x2="100%" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
             </svg>
           </div>
+
+          {/* Card 1 */}
           <div className="what-content what-noTouch" ref={(el) => setRef(el, 0)}>
             <div className="what-border1">
               <svg height="100%">
@@ -64,6 +74,8 @@ const WhatIDo = () => {
               <div className="what-arrow"></div>
             </div>
           </div>
+
+          {/* Card 2 */}
           <div className="what-content what-noTouch" ref={(el) => setRef(el, 1)}>
             <div className="what-border1">
               <svg height="100%">
@@ -84,6 +96,7 @@ const WhatIDo = () => {
               <div className="what-arrow"></div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -93,15 +106,25 @@ const WhatIDo = () => {
 export default WhatIDo;
 
 function handleClick(container: HTMLDivElement) {
-  container.classList.toggle("what-content-active");
-  container.classList.remove("what-sibling");
+  const isActive = container.classList.contains("what-content-active");
+
+  // Reset all siblings and the container itself first
   if (container.parentElement) {
-    const siblings = Array.from(container.parentElement.children);
-    siblings.forEach((sibling) => {
-      if (sibling !== container) {
-        sibling.classList.remove("what-content-active");
-        sibling.classList.toggle("what-sibling");
-      }
+    Array.from(container.parentElement.children).forEach((sibling) => {
+      sibling.classList.remove("what-content-active", "what-sibling");
     });
   }
+
+  if (!isActive) {
+    // Activate clicked card and shrink siblings
+    container.classList.add("what-content-active");
+    if (container.parentElement) {
+      Array.from(container.parentElement.children).forEach((sibling) => {
+        if (sibling !== container) {
+          sibling.classList.add("what-sibling");
+        }
+      });
+    }
+  }
+  // If it was already active, clicking again collapses everything back to default
 }

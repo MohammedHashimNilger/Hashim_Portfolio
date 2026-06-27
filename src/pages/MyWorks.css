@@ -163,5 +163,81 @@
 
   .myworks-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .myworks-page {
+    padding: 50px 15px;
+  }
+
+  .myworks-header {
+    margin-bottom: 40px;
+  }
+
+  .myworks-header h1 {
+    font-size: 32px;
+  }
+
+  .myworks-header p {
+    font-size: 15px;
+  }
+
+  .back-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .myworks-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .myworks-card-image {
+    height: 180px;
+  }
+
+  .myworks-card-info {
+    padding: 18px;
+  }
+
+  .myworks-card-info h3 {
+    font-size: 18px;
+  }
+
+  .myworks-card-description {
+    font-size: 13px;
+  }
+
+  .myworks-card-tech {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .myworks-page {
+    padding: 40px 10px;
+  }
+
+  .myworks-header h1 {
+    font-size: 26px;
+  }
+
+  .myworks-card-image {
+    height: 160px;
+  }
+
+  .myworks-card-info {
+    padding: 14px;
+  }
+
+  .myworks-card-info h3 {
+    font-size: 16px;
+  }
+
+  .myworks-link {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 }
